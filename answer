@@ -1,0 +1,81 @@
+class Solution {
+    public int maxTrailingZeros(int[][] grid) {
+        // grid dimensions
+        int m = grid.length;
+        int n = grid[0].length;
+
+        int[][] twos = new int[m][n];
+        int[][] fives = new int[m][n];
+
+        for(int i = 0;i < m;i++){
+            for(int j = 0;j < n;j++){
+                twos[i][j] = count(grid[i][j], 2);
+                fives[i][j] = count(grid[i][j], 5);
+            }
+        }
+
+        int[][] row2 = new int[m][n+1];
+        int[][] row5 = new int[m][n+1];
+        int[][] col2 = new int[m+1][n];
+        int[][] col5 = new int[m+1][n];
+
+        for(int i = 0;i < m;i++){
+            for(int j = 0;j < n;j++){
+                row2[i][j+1] = row2[i][j] + twos[i][j];
+                row5[i][j+1] = row5[i][j] + fives[i][j];
+                col2[i+1][j] = col2[i][j] + twos[i][j];
+                col5[i+1][j] = col5[i][j] + fives[i][j];
+            }
+        }
+
+        int ans = 0;
+
+        for(int i = 0;i < m;i++){
+            for(int j = 0;j < n;j++){
+                int c2 = twos[i][j];
+                int c5 = fives[i][j];
+
+                // up & left
+                ans = Math.max(ans,
+                calc(
+                    col2[i+1][j] + row2[i][j+1] - c2,
+                    col5[i+1][j] + row5[i][j+1] - c5
+                ));
+
+                // up & right
+                ans = Math.max(ans,
+                calc(
+                    col2[i+1][j] + (row2[i][n] - row2[i][j]) - c2,
+                    col5[i+1][j] + (row5[i][n] - row5[i][j]) - c5
+                ));
+
+                // down & left
+                ans = Math.max(ans,
+                calc(
+                    (col2[m][j] - col2[i][j]) + row2[i][j+1] - c2,
+                    (col5[m][j] - col5[i][j]) + row5[i][j+1] - c5
+                ));
+
+                // down & right
+                ans = Math.max(ans,
+                calc(
+                    (col2[m][j] - col2[i][j]) + (row2[i][n] - row2[i][j]) - c2,
+                    (col5[m][j] - col5[i][j]) + (row5[i][n] - row5[i][j]) - c5
+                ));
+            }
+        }
+        return ans;
+    }
+    private int calc(int twos, int fives){
+        return Math.min(twos, fives);
+    }
+
+    private int count(int num, int factor){
+        int c = 0;
+        while(num % factor ==0){
+            c++;
+            num /= factor;
+        }
+        return c;
+    }
+}
