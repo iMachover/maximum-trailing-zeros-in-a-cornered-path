@@ -1,28 +1,34 @@
 class Solution {
     public int maxTrailingZeros(int[][] grid) {
-        // grid dimensions
+        
+        // grid length
         int m = grid.length;
         int n = grid[0].length;
 
+        // count prime factors
         int[][] twos = new int[m][n];
         int[][] fives = new int[m][n];
 
-        for(int i = 0;i < m;i++){
-            for(int j = 0;j < n;j++){
+        for(int i = 0;i<m;i++){
+            for(int j = 0;j<n;j++){
                 twos[i][j] = count(grid[i][j], 2);
                 fives[i][j] = count(grid[i][j], 5);
             }
         }
 
+        // create prefix sums
         int[][] row2 = new int[m][n+1];
         int[][] row5 = new int[m][n+1];
         int[][] col2 = new int[m+1][n];
         int[][] col5 = new int[m+1][n];
 
-        for(int i = 0;i < m;i++){
-            for(int j = 0;j < n;j++){
+        // calculate prefix sums
+        for(int i = 0;i<m;i++){
+            for(int j =0;j<n;j++){
+                // rows
                 row2[i][j+1] = row2[i][j] + twos[i][j];
                 row5[i][j+1] = row5[i][j] + fives[i][j];
+                // cols
                 col2[i+1][j] = col2[i][j] + twos[i][j];
                 col5[i+1][j] = col5[i][j] + fives[i][j];
             }
@@ -30,8 +36,11 @@ class Solution {
 
         int ans = 0;
 
-        for(int i = 0;i < m;i++){
-            for(int j = 0;j < n;j++){
+        // find max number of trailing zeros
+        for(int i = 0;i<m;i++){
+            for(int j=0;j<m;j++){
+
+                // no duplicates
                 int c2 = twos[i][j];
                 int c5 = fives[i][j];
 
@@ -66,13 +75,15 @@ class Solution {
         }
         return ans;
     }
+
+    // helpers
     private int calc(int twos, int fives){
         return Math.min(twos, fives);
     }
 
     private int count(int num, int factor){
         int c = 0;
-        while(num % factor ==0){
+        while(num % factor == 0){
             c++;
             num /= factor;
         }
