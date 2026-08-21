@@ -3,35 +3,17 @@ class Solution {
     public int maxTrailingZeros(int[][] grid) {
 
         // get grid size
-        // create two more grids to count 2s and 5s prime factors
-        // loop over grids to perform count calculation
-        // build prefix sums for rows and columns
-                // build rows prefix
-                //build columns prefix
-        // try every cell as the corner of an L-shaped path
-                // factor contribution of current cell
-
-                // hints
-                // Up = col[i+1][j]
-                // Down = col[m][j] - col[i][j]
-                // Right = row[i][n] - row[i][j]
-                // Left = row[i][j+1]
-                
-                // case 1: Up + left
-                // case 2: Up + right
-                // case 3: Down + left
-                // case 4: Down + right
+        // count prime factors
+        // build prefix sums
+        // compute max trailing zeros
+                // no duplicates
+                // up & left
+                // up & right
+                // down & left
+                // down & right
 
     // helper functions
-    // return minimum of traling zeros
-    private int calc(int twos, int fives){
-    
-    }
-    // counts the number of times a number is divisble by a factor
-    private int count(int num, int factor){
-    
-    }
-    
+
     }
 }
 
